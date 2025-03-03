@@ -28,3 +28,33 @@ metricCardsArray.forEach(card => {
     card.textContent = card.textContent + ' - Updated';
     card.style.backgroundColor = 'lightBlue';
 });
+
+//Task 3 - Implemented Dynamic Inventory List
+function createProductItem(productName) { // Function to create a new product item
+    let listItem = document.createElement('li');
+    listItem.text = productName;
+    listItem.setAttribute('class', 'product-item');
+    listItem.setAttribute('data-product', `productName`); // Example of a custom data attribute
+    
+    // Add event listener to remove the item when clicked
+    listItem.addEventListener('click', removeProductItem);
+    
+    return listItem;
+};
+
+let inventoryList = document.getElementById('inventoryList'); // Create the inventory list element if it doesn't exist
+if (!inventoryList) {
+    inventoryList = document.createElement('ul');
+    inventoryList.id = 'inventoryList';
+    document.body.appendChild(inventoryList); // Append to the body or another appropriate container
+}
+
+let addButton = document.createElement('button'); //  Add a button to add items
+addButton.textContent = 'Add Product';
+addButton.addEventListener('click', function() {
+    const productName = prompt('Enter product name:');
+    if (productName) {
+        addProductItem(productName);
+    }
+});
+document.body.appendChild(addButton);
