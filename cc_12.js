@@ -18,9 +18,7 @@ revenueCard.appendChild(revenueCardTitle); //Appending the title and value to th
 revenueCard.appendChild(revenueCardValue); 
 
 //Task 2 - Updated Metric Cards via Array Conversion
-let metricCards = document.querySelectorAll('metric-card');
-
-// Converting the NodeList to an array
+let metricCards = document.querySelectorAll('.metric-card');
 let metricCardsArray = Array.from(metricCards);
 
 // Using forEach to update each card's inner text
@@ -34,27 +32,60 @@ function createProductItem(productName) { // Function to create a new product it
     let listItem = document.createElement('li');
     listItem.text = productName;
     listItem.setAttribute('class', 'product-item');
-    listItem.setAttribute('data-product', `productName`); // Example of a custom data attribute
+    listItem.setAttribute('data-product', productName); // Example of a custom data attribute
     
-    // Add event listener to remove the item when clicked
-    listItem.addEventListener('click', removeProductItem);
-    
+    listItem.addEventListener('click', removeProductItem);     // Event listener to remove the item when clicked
+
     return listItem;
 };
-
-let inventoryList = document.getElementById('inventoryList'); // Create the inventory list element if it doesn't exist
+const inventoryList = document.getElementById('inventoryList'); // Create the inventory list element if it doesn't exist
 if (!inventoryList) {
     inventoryList = document.createElement('ul');
     inventoryList.id = 'inventoryList';
-    document.body.appendChild(inventoryList); // Append to the body or another appropriate container
-}
-
-let addButton = document.createElement('button'); //  Add a button to add items
+    document.body.appendChild(inventoryList); 
+};
+function removeProductItem(event) {
+    const itemToRemove = event.target;
+    const inventoryList = document.getElementById('inventoryList');
+    inventoryList.removeChild(itemToRemove);
+};
+const addButton = document.createElement('button'); // Create the inventory list element if it doesn't exist
 addButton.textContent = 'Add Product';
 addButton.addEventListener('click', function() {
     const productName = prompt('Enter product name:');
     if (productName) {
-        addProductItem(productName);
-    }
-});
+        let productItem = createProductItem(productName);
+}});
 document.body.appendChild(addButton);
+
+// Task 4 - Demonstrated Event Bubbling in Customer Section
+const customerSection = document.getElementById('customerSection'); // Create customer section
+
+function createCustomerCard(customerName) { // Function to create a customer card
+    const customerCard = document.createElement('div');
+    customerCard.classList.add('customer-card');
+    customerCard.textContent = customerName;
+
+    customerCard.addEventListener('click', function(event) {//Adding click event listener to the customer card
+    console.log('Customer card clicked');
+    event.stopPropagation(); // Stop event bubbling
+    
+});
+
+    return customerCard;
+};
+
+// Add customer cards to the customer section
+const customer1 = createCustomerCard('Mbilu');
+customerSection.appendChild(customer1);
+
+const customer2 = createCustomerCard('Gumani');
+customerSection.appendChild(customer2);
+
+const customer3 = createCustomerCard('Tendai');
+customerSection.appendChild(customer3);
+
+// Add click event listener to the customer section
+customerSection.addEventListener('click', function() {
+    console.log('Customer section clicked');
+});
