@@ -14,6 +14,17 @@ revenueCardTitle.textContent = 'Revenue';
 let revenueCardValue = document.createElement('p'); 
 revenueCardValue.textContent = ' $0'; 
 
-// Appending the title and value to the metric card
-revenueCard.appendChild(revenueCardTitle); 
+revenueCard.appendChild(revenueCardTitle); //Appending the title and value to the metric card
 revenueCard.appendChild(revenueCardValue); 
+
+//Task 2 - Updated Metric Cards via Array Conversion
+let metricCards = document.querySelectorAll('metric-card');
+
+// Converting the NodeList to an array
+let metricCardsArray = Array.from(metricCards);
+
+// Using forEach to update each card's inner text
+metricCardsArray.forEach(card => {
+    card.textContent = card.textContent + ' - Updated';
+    card.style.backgroundColor = 'lightBlue';
+});
