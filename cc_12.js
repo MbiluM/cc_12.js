@@ -1,91 +1,104 @@
-//Task 1 - Created Revenue Metric Card
-let dashboardContainer1 = document.getElementById('dashboard'); 
-let dashboardContainer2 = document.querySelector('#dashboard'); 
+// Task 1: Business Dashboard – DOM Element Selection and Creation
 
-let revenueCard = document.createElement('div'); 
+// Select the dashboard container using getElementById
+const dashboardById = document.getElementById("dashboard");
 
-revenueCard.setAttribute('class', 'metric-card'); // Assigning a class and an ID to the new element
-revenueCard.setAttribute('id', 'revenueCard'); 
+// Also select using querySelector
+const dashboard = document.querySelector("#dashboard");
 
-let revenueCardTitle = document.createElement('h3'); //Creating elements for the title & value
+// Create a new div element to serve as the Revenue metric card
+const revenueCard = document.createElement("div");
 
-revenueCardTitle.textContent = 'Revenue'; 
+// Set attributes for the new card: id and class
+revenueCard.setAttribute("id", "revenueCard");
+revenueCard.setAttribute("class", "metric-card");
 
-let revenueCardValue = document.createElement('p'); 
-revenueCardValue.textContent = ' $0'; 
+// Populate the card with a title and a placeholder value
+revenueCard.innerHTML = "<h2>Revenue</h2><p>$0</p>";
 
-revenueCard.appendChild(revenueCardTitle); //Appending the title and value to the metric card
-revenueCard.appendChild(revenueCardValue); 
+// Append the revenue card to the dashboard container
+dashboard.appendChild(revenueCard);
 
-//Task 2 - Updated Metric Cards via Array Conversion
-let metricCards = document.querySelectorAll('.metric-card');
-let metricCardsArray = Array.from(metricCards);
+// Task 2: Updating Dashboard Metrics – Working with NodeLists and Arrays
 
-// Using forEach to update each card's inner text
+// For demonstration, create additional metric cards (Profit and Expenses)
+const profitCard = document.createElement("div");
+profitCard.setAttribute("class", "metric-card");
+profitCard.innerHTML = "<h2>Profit</h2><p>$0</p>";
+dashboard.appendChild(profitCard);
+
+const expensesCard = document.createElement("div");
+expensesCard.setAttribute("class", "metric-card");
+expensesCard.innerHTML = "<h2>Expenses</h2><p>$0</p>";
+dashboard.appendChild(expensesCard);
+
+// Select all metric cards using querySelectorAll
+const metricCardsNodeList = document.querySelectorAll(".metric-card");
+
+// Convert the NodeList into an array
+const metricCardsArray = Array.from(metricCardsNodeList);
+
+// Use an array method to update each card's content; here, we append " - Updated" to the value paragraph
 metricCardsArray.forEach(card => {
-    card.textContent = card.textContent + ' - Updated';
-    card.style.backgroundColor = 'lightBlue';
+    const p = card.querySelector("p");
+    if (p) {
+        p.textContent += " - Updated";
+    }
 });
 
-//Task 3 - Implemented Dynamic Inventory List
-function createProductItem(productName) { // Function to create a new product item
-    let listItem = document.createElement('li');
-    listItem.text = productName;
-    listItem.setAttribute('class', 'product-item');
-    listItem.setAttribute('data-product', productName); // Example of a custom data attribute
+// Task 3: Dynamic Inventory Management – Adding and Removing Items
+
+// Select the inventory list element from the HTML
+const inventoryList = document.getElementById("inventoryList");
+
+// Function to add a new product item to the inventory list
+function addInventoryItem(productName) {
+    const li = document.createElement("li");
+    li.setAttribute("class", "product-item");
+    li.textContent = productName;
     
-    listItem.addEventListener('click', removeProductItem);     // Event listener to remove the item when clicked
-
-    return listItem;
-};
-const inventoryList = document.getElementById('inventoryList'); // Create the inventory list element if it doesn't exist
-if (!inventoryList) {
-    inventoryList = document.createElement('ul');
-    inventoryList.id = 'inventoryList';
-    document.body.appendChild(inventoryList); 
-};
-function removeProductItem(event) {
-    const itemToRemove = event.target;
-    const inventoryList = document.getElementById('inventoryList');
-    inventoryList.removeChild(itemToRemove);
-};
-const addButton = document.createElement('button'); // Create the inventory list element if it doesn't exist
-addButton.textContent = 'Add Product';
-addButton.addEventListener('click', function() {
-    const productName = prompt('Enter product name:');
-    if (productName) {
-        let productItem = createProductItem(productName);
-}});
-document.body.appendChild(addButton);
-
-// Task 4 - Demonstrated Event Bubbling in Customer Section
-const customerSection = document.getElementById('customerSection'); // Create customer section
-
-function createCustomerCard(customerName) { // Function to create a customer card
-    const customerCard = document.createElement('div');
-    customerCard.classList.add('customer-card');
-    customerCard.textContent = customerName;
-
-    customerCard.addEventListener('click', function(event) {//Adding click event listener to the customer card
-    console.log('Customer card clicked');
-    event.stopPropagation(); // Stop event bubbling
+    // Attach an event listener to remove the item when clicked
+    li.addEventListener("click", function() {
+        removeInventoryItem(li);
+    });
     
+    inventoryList.appendChild(li);
+}
+
+// Function to remove a product item from the inventory list
+function removeInventoryItem(item) {
+    inventoryList.removeChild(item);
+}
+
+// Test Cases: Adding new inventory items
+addInventoryItem("Product A");
+addInventoryItem("Product B");
+
+// Task 4: Business Customer Section – Handling Event Bubbling
+
+// Assume there is a parent container in the HTML with id "customerSection"
+const customerSection = document.getElementById("customerSection");
+
+// Create customer cards and append them to the customer section
+const customerCard1 = document.createElement("div");
+customerCard1.setAttribute("class", "customer-card");
+customerCard1.textContent = "Customer 1";
+customerSection.appendChild(customerCard1);
+
+const customerCard2 = document.createElement("div");
+customerCard2.setAttribute("class", "customer-card");
+customerCard2.textContent = "Customer 2";
+customerSection.appendChild(customerCard2);
+
+// Attach an event listener to the parent container to log when it is clicked
+customerSection.addEventListener("click", function() {
+    console.log("Customer section clicked");
 });
 
-    return customerCard;
-};
-
-// Add customer cards to the customer section
-const customer1 = createCustomerCard('Mbilu');
-customerSection.appendChild(customer1);
-
-const customer2 = createCustomerCard('Gumani');
-customerSection.appendChild(customer2);
-
-const customer3 = createCustomerCard('Tendai');
-customerSection.appendChild(customer3);
-
-// Add click event listener to the customer section
-customerSection.addEventListener('click', function() {
-    console.log('Customer section clicked');
+// Attach event listeners to each customer card; use stopPropagation() to prevent the parent's event handler from firing
+document.querySelectorAll(".customer-card").forEach(card => {
+    card.addEventListener("click", function(event) {
+        console.log("Customer card clicked");
+        event.stopPropagation(); // Prevent event bubbling to the parent container
+    });
 });
